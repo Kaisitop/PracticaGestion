@@ -1,4 +1,4 @@
-name: CI Pipeline Nuevo
+name: CI Pipeline Agregado
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
         pytest --junitxml=report.xml || true
 
     - name: Upload test report artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-report
         path: report.xml
