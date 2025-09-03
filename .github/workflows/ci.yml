@@ -1,8 +1,8 @@
-name: CI Pipeline Agregado
+name: CI Pipeline Nuevo
 
 on:
   push:
-    branches: [ master, ci-setup ]
+    branches: [ master, ci-setup, practica ]
   pull_request:
     branches: [ master ]
 
@@ -22,21 +22,23 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Run tests with coverage
+    - name: Run tests and generate JUnit report
       run: |
-        pytest --cov=./ --cov-report=xml --cov-report=html
+        pytest --junitxml=report.xml || true
 
-    - name: Upload coverage XML report
+    - name: Upload test report artifact
       uses: actions/upload-artifact@v3
       with:
-        name: coverage-report
-        path: coverage.xml
+        name: test-report
+        path: report.xml
 
-    - name: Upload coverage HTML report
-      uses: actions/upload-artifact@v3
+    - name: Publish test results
+      uses: dorny/test-reporter@v1
+      if: always()
       with:
-        name: html-coverage-report
-        path: htmlcov/
+        name: pytest
+        path: report.xml
+        reporter: junit
+        upload-archive: true
