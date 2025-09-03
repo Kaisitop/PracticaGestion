@@ -40,5 +40,4 @@ jobs:
       with:
         name: pytest
         path: report.xml
-        reporter: junit
-        upload-archive: true
+        reporter: github-check
