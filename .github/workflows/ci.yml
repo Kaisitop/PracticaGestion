@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI Pipeline Agregado
 
 on:
   push:
@@ -22,9 +22,21 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Run tests
+    - name: Run tests with coverage
       run: |
-        echo "Ejecutando pruebas..."
-        pytest || echo "No hay pruebas definidas, continuando..."
+        pytest --cov=./ --cov-report=xml --cov-report=html
+
+    - name: Upload coverage XML report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coverage.xml
+
+    - name: Upload coverage HTML report
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-coverage-report
+        path: htmlcov/
