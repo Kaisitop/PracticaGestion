@@ -1,96 +1,137 @@
 {% extends 'public/base_cpanel.html' %}
-<!--Cambiando el title-->
-{% block title %}Crud con Python 🐍 | Perfil {% endblock %}
-<!--Inicio del block-->
-{% block body %}
-<div class="card" style="border-radius: 0px !important">
-  <div class="row justify-content-center mb-2">
-    <div class="col-md-12">
-      <h3 class="text-center mt-5 mb-3">MI PERFIL</h3>
-      <hr />
-    </div>
-  </div>
+{% block title %}Crud con Python 🐍 | Perfil{% endblock %}
 
-  <div class="row justify-content-center mb-2">
-    <div class="col-md-6">
-      <form
-        class="form-horizontal mx-auto"
-        method="POST"
-        action="/actualizar-datos-perfil">
-        <div class="card-body">
-          <div class="mb-3">
-            <label for="name_surname" class="form-label">Usuario</label>
-            <input
-              type="text"
-              name="name_surname"
-              value="{{ info_perfil_session[0]['name_surname'] }}"
-              class="form-control"
-              required />
-          </div>
-          <div class="mb-3">
-            <label for="email_user" class="form-label">Email</label>
-            <input
-              class="form-control"
-              type="email"
-              name="email_user"
-              value="{{ info_perfil_session[0]['email_user'] }}"
-              readonly />
-          </div>
-          <div class="mb-3 form-password-toggle">
-            <label class="form-label" for="pass_actual">Clave Actual</label>
-            <div class="input-group input-group-merge">
-              <input
-                type="password"
-                class="form-control"
-                name="pass_actual"
-                id="pass_actual"
-                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                aria-describedby="password" />
-              <span class="input-group-text cursor-pointer">
-                <i class="bx bx-hide"></i>
-              </span>
-            </div>
-          </div>
-          <div class="mb-3 form-password-toggle">
-            <label class="form-label" for="new_pass_user">Nueva Clave</label>
-            <div class="input-group input-group-merge">
-              <input
-                type="password"
-                class="form-control"
-                name="new_pass_user"
-                id="new_pass_user"
-                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                aria-describedby="password" />
-              <span class="input-group-text cursor-pointer">
-                <i class="bx bx-hide"></i>
-              </span>
-            </div>
-          </div>
-          <div class="mb-3 form-password-toggle">
-            <label class="form-label" for="repetir_pass_user">
-              Repetir Nueva Clave
-            </label>
-            <div class="input-group input-group-merge">
-              <input
-                type="password"
-                class="form-control"
-                name="repetir_pass_user"
-                id="repetir_pass_user"
-                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                aria-describedby="password" />
-              <span class="input-group-text cursor-pointer">
-                <i class="bx bx-hide"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3 text-center">
-          <button type="submit" class="btn rounded-pill btn-primary">
-            Actualizar mis datos
-          </button>
-        </div>
-      </form>
+{% block customCSS %}
+<style>
+  body {
+    background-color: #0a2540;
+    color: #f0f4f8;
+    font-family: 'Public Sans', sans-serif;
+  }
+  .card {
+    background-color: #0a2540;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    padding: 2rem;
+  }
+  h3.text-center {
+    color: #f0f4f8;
+    font-weight: 700;
+  }
+  label {
+    color: #cfd8dc;
+    font-weight: 600;
+  }
+  .form-control, .form-select {
+    background-color: #12305a;
+    border: 1.5px solid #274060;
+    color: #f0f4f8;
+  }
+  .form-control:focus {
+    background-color: #12305a;
+    border-color: #64b5f6;
+    box-shadow: 0 0 5px #64b5f6;
+    color: #fff;
+  }
+  .input-group-text {
+    background-color: #274060;
+    border: 1.5px solid #274060;
+    color: #f0f4f8;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background-color: #1e40af;
+    border: none;
+    padding: 0.6rem 2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    box-shadow: 0 6px 12px rgba(30, 64, 175, 0.5);
+    transition: background-color 0.3s ease;
+  }
+  .btn-primary:hover {
+    background-color: #3b82f6;
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.7);
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="card mx-auto" style="max-width: 600px;">
+  <h3 class="text-center mt-4 mb-4">MI PERFIL</h3>
+  <hr style="border-color: #274060;">
+
+  <form method="POST" action="/actualizar-datos-perfil" autocomplete="off" novalidate>
+    <div class="mb-4">
+      <label for="name_surname" class="form-label">Usuario</label>
+      <input
+        type="text"
+        id="name_surname"
+        name="name_surname"
+        value="{{ info_perfil_session[0]['name_surname'] }}"
+        class="form-control"
+        required
+      />
     </div>
-  </div>
+
+    <div class="mb-4">
+      <label for="email_user" class="form-label">Email</label>
+      <input
+        type="email"
+        id="email_user"
+        name="email_user"
+        value="{{ info_perfil_session[0]['email_user'] }}"
+        readonly
+        class="form-control"
+      />
+    </div>
+
+    <!-- Password fields with toggle -->
+    {% for field, label, id_name in [
+      ('pass_actual', 'Clave Actual', 'pass_actual'),
+      ('new_pass_user', 'Nueva Clave', 'new_pass_user'),
+      ('repetir_pass_user', 'Repetir Nueva Clave', 'repetir_pass_user')
+    ] %}
+    <div class="mb-4">
+      <label for="{{ id_name }}" class="form-label">{{ label }}</label>
+      <div class="input-group">
+        <input
+          type="password"
+          id="{{ id_name }}"
+          name="{{ field }}"
+          placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+          class="form-control"
+          aria-describedby="togglePassword{{ loop.index }}"
+        />
+        <span class="input-group-text" id="togglePassword{{ loop.index }}" onclick="togglePassword('{{ id_name }}')" style="user-select:none;">
+          <i class="bi bi-eye-slash" id="icon-{{ id_name }}"></i>
+        </span>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="text-center mt-4 mb-3">
+      <button type="submit" class="btn btn-primary">
+        Actualizar mis datos
+      </button>
+    </div>
+  </form>
 </div>
+{% endblock %}
+
+{% block customJS %}
+<script>
+  function togglePassword(id) {
+    const input = document.getElementById(id);
+    const icon = document.getElementById('icon-' + id);
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.remove('bi-eye-slash');
+      icon.classList.add('bi-eye');
+    } else {
+      input.type = "password";
+      icon.classList.remove('bi-eye');
+      icon.classList.add('bi-eye-slash');
+    }
+  }
+</script>
 {% endblock %}

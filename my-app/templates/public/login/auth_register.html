@@ -1,74 +1,84 @@
 {% extends 'public/login/base_login.html' %}
-<!---->
-{% block title %}Crud con Python 🐍 | crear cuenta{% endblock %}
-<!---->
-{% block body %}
+{% block title %}Crud con Python 🐍 | Crear Cuenta{% endblock %}
 
-<div class="container-xxl">
-  <div class="authentication-wrapper authentication-basic container-p-y">
+{% block body %}
+<div class="container-xxl min-vh-100 d-flex align-items-center justify-content-center bg-dark">
+  <div class="authentication-wrapper authentication-basic container-p-y w-100" style="max-width: 420px;">
     <div class="authentication-inner">
-      <div class="card">
-        <div class="card-body">
-          <div class="app-brand justify-content-center">
-            <span class="app-brand-logo">
-              <img
-                class="logo"
-                src="{{ url_for('static', filename ='assets/img/logo.png') }}"
-                alt="Logo" />
-            </span>
+      <div class="card shadow-lg rounded-4" style="background-color: #0a2540; border: none;">
+        <div class="card-body p-4">
+          <div class="app-brand justify-content-center mb-4 d-flex">
+            <img
+              class="logo mx-auto"
+              src="{{ url_for('static', filename='assets/img/logo.png') }}"
+              alt="Logo"
+              style="max-height: 60px;"
+            />
           </div>
 
           <form
             class="mb-3"
             action="{{ url_for('cpanelResgisterUserBD') }}"
-            method="POST">
+            method="POST"
+            autocomplete="off"
+          >
             <div class="mb-3">
-              <label for="name_surname" class="form-label">
-                Nombre y apellido
-              </label>
+              <label for="name_surname" class="form-label text-white fw-semibold">Nombre y apellido</label>
               <input
                 type="text"
-                class="form-control"
+                class="form-control bg-transparent border-1 border-secondary text-white"
                 name="name_surname"
+                id="name_surname"
                 required
-                autofocus />
+                autofocus
+                style="box-shadow: none;"
+              />
             </div>
+
             <div class="mb-3">
-              <label for="email_user" class="form-label">Email</label>
+              <label for="email_user" class="form-label text-white fw-semibold">Email</label>
               <input
                 type="email"
-                class="form-control"
+                class="form-control bg-transparent border-1 border-secondary text-white"
                 name="email_user"
-                required />
+                id="email_user"
+                required
+                style="box-shadow: none;"
+              />
             </div>
+
             <div class="mb-3 form-password-toggle">
-              <label class="form-label" for="pass_user">Clave</label>
+              <label class="form-label text-white fw-semibold" for="pass_user">Clave</label>
               <div class="input-group input-group-merge">
                 <input
                   type="password"
-                  class="form-control"
+                  class="form-control bg-transparent border-1 border-secondary text-white"
                   name="pass_user"
                   id="pass_user"
-                  placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                  aria-describedby="password"
-                  required />
-                <span class="input-group-text cursor-pointer">
-                  <i class="bx bx-hide"></i>
+                  placeholder="••••••••••••"
+                  aria-describedby="togglePassword"
+                  required
+                  style="box-shadow: none;"
+                />
+                <span class="input-group-text cursor-pointer bg-transparent border-1 border-secondary text-white" id="togglePassword" onclick="togglePassword()">
+                  <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
                 </span>
               </div>
             </div>
-            <button class="btn btn-primary w-100">
+
+            <button class="btn btn-primary w-100 fw-semibold" type="submit" style="border-radius: 50px;">
               Crear cuenta
-              <i class="bi bi-arrow-right-circle"></i>
+              <i class="bi bi-arrow-right-circle ms-2"></i>
             </button>
           </form>
 
-          <div class="text-center">
+          <div class="text-center mt-3">
             <a
               href="{{ url_for('inicio') }}"
-              class="d-flex align-items-center justify-content-center">
-              <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
-              volver
+              class="d-flex align-items-center justify-content-center text-info text-decoration-none fw-semibold"
+            >
+              <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm me-1"></i>
+              Volver
             </a>
           </div>
         </div>
@@ -77,4 +87,17 @@
   </div>
 </div>
 
+<script>
+  function togglePassword() {
+    const input = document.getElementById('pass_user');
+    const icon = document.getElementById('togglePasswordIcon');
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.replace('bi-eye-slash', 'bi-eye');
+    } else {
+      input.type = "password";
+      icon.classList.replace('bi-eye', 'bi-eye-slash');
+    }
+  }
+</script>
 {% endblock %}
